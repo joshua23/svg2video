@@ -776,9 +776,9 @@ function build() {
   buildMusic(music);
 
   // 对白
-  // 优先使用 Speko 合成的真人感配音（scripts/afanti/speko-voice.mjs）；没有时退回本地 TTS + 变声
+  // 优先使用 magic-story-cup 配音链路合成的对白（scripts/afanti/dub.mjs）；没有时退回本地 TTS + 变声
   const vdir = path.join(BUILD, 'voice');
-  const sdir = path.join(BUILD, 'voice_speko');
+  const sdir = path.join(BUILD, 'voice_ext');
   let usedSpeko = 0;
   for (const [i, l] of LINES.entries()) {
     const sp = path.join(sdir, `${l.id}.wav`);
@@ -799,7 +799,7 @@ function build() {
     if (l.t + dur > next + 0.05) console.warn(`⚠ ${l.id} 时长 ${dur.toFixed(2)}s，会和下一句重叠 ${(l.t + dur - next).toFixed(2)}s`);
     voice.add(v, l.t, l.gain * 0.9, -0.05);
   }
-  console.log(usedSpeko ? `对白：${usedSpeko}/${LINES.length} 句使用 Speko 配音` : '对白：使用本地 TTS + 变声');
+  console.log(usedSpeko ? `对白：${usedSpeko}/${LINES.length} 句使用外部配音（build/afanti/voice_ext）` : '对白：使用本地 TTS + 变声');
 
   // ---------------------------------------------------------------- 混音
   const [vL, vR] = reverb(voice.L, voice.R, { room: 0.7, damp: 0.5, wet: 0.16 });

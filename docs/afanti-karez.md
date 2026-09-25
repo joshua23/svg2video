@@ -24,20 +24,29 @@
 
 渲染：`npm run afanti:render3d`（没有 GPU 时自动用软件 WebGL `swangle`；有 GPU 可设 `AFANTI_GL=angle` 提速）。
 
-## 配音（Speko）
+## 配音（沿用 magic-story-cup 的配音链路）
 
-`scripts/afanti/speko-voice.mjs` 通过 Speko 语音网关（`POST https://api.speko.dev/v1/synthesize`）合成对白，
-优先使用支持表演指令的模型，每句台词都附带角色设定和这一刻的情绪指令。
+`scripts/afanti/dub.mjs` 用 [joshua23/magic-story-cup](https://github.com/joshua23/magic-story-cup)
+的两条配音链路和音色目录合成对白（请求格式与它的 `TtsService` 一致）：
+
+| 链路 | 接口 | 选用音色 | 理由 |
+|---|---|---|---|
+| OmniVoice（默认，本地） | `POST http://localhost:3900/v1/audio/speech` | **老张 `691d9d11`** | magic-story-cup 在用的中老年男声（《防你没商量》乡村医生），乡土、带说书味，最贴阿凡提；语速 0.225 秒/字，装得进镜头 |
+| Speko（云端） | `POST https://api.speko.dev/v1/synthesize` | `onyx` | magic-story-cup 云端候选里唯一的低沉男声 |
+
+每句按镜头时长自动算语速（最多 1.6×），输出到 `build/afanti/voice_ext/`，`audio.mjs` 发现后直接使用。
 
 ```bash
-export SPEKO_API_KEY=...          # 只放在环境变量里，不要提交进仓库
-npm run afanti:speko -- l08       # 先合成一句试听
-npm run afanti:speko              # 合成全部 12 句 → build/afanti/voice_speko/
-npm run afanti:audio              # 自动改用 Speko 配音重新混音
-npm run afanti:render3d
+# 在装有 OmniVoice-Studio 的 Mac 上（magic-story-cup 的本地后端）
+npm run afanti:dub -- l08        # 先试听一句
+npm run afanti:dub               # 全部 12 句
+npm run afanti:audio && npm run afanti:render3d
+
+# 或走 Speko 云端
+DUB_PROVIDER=speko SPEKO_API_KEY=... npm run afanti:dub
 ```
 
-没有 Speko 配音文件时，`audio.mjs` 退回到本地 TTS + 变声。
+没有外部配音文件时，`audio.mjs` 退回到本地 TTS + 变声。
 
 
 ## 改编说明
