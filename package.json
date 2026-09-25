@@ -13,20 +13,26 @@
     "afanti:voice": "node scripts/afanti/audio.mjs export-lines && python3 scripts/afanti/tts.py build/afanti/lines.json build/afanti/voice",
     "afanti:audio": "node scripts/afanti/audio.mjs build",
     "afanti:render": "node scripts/afanti/render.mjs",
-    "afanti:all": "npm run afanti:voice && npm run afanti:audio && npm run afanti:render"
+    "afanti:all": "npm run afanti:voice && npm run afanti:audio && npm run afanti:render",
+    "afanti:render3d": "node scripts/afanti/render.mjs AfantiKarez3D",
+    "afanti:speko": "node scripts/afanti/speko-voice.mjs"
   },
   "dependencies": {
     "@fontsource/noto-sans-sc": "^5.3.0",
     "@fontsource/zcool-kuaile": "^5.3.0",
+    "@fontsource/zcool-qingke-huangyou": "^5.3.0",
+    "@react-three/fiber": "^8.17.14",
     "@remotion/bundler": "^4.0.357",
     "@remotion/cli": "^4.0.357",
     "@remotion/paths": "^4.0.357",
     "@remotion/player": "^4.0.357",
     "@remotion/renderer": "^4.0.357",
+    "@remotion/three": "^4.0.357",
     "@supabase/supabase-js": "^2.57.4",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/node": "^24.7.1",
+    "@types/three": "^0.170.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "lucide-react": "^0.344.0",
@@ -34,7 +40,8 @@
     "pdfjs-dist": "^5.4.296",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "remotion": "^4.0.357"
+    "remotion": "^4.0.357",
+    "three": "^0.170.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",

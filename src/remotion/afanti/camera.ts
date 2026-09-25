@@ -132,8 +132,8 @@ export function cameraAt(t: number): ShotFx {
     case 'K_pov': {
       const dd = donkeyAt(t);
       const bob = Math.abs(Math.sin(dd.phase * Math.PI * 2)) * 0.05;
-      pos = [dd.x - 0.12, dd.y, 2.12 - bob - dd.duck * 0.1];
-      tgt = [WHEEL.x + 1, 0, lerp(2.4, 2.0, u)];
+      pos = [dd.x - 0.45, dd.y, 1.86 - bob - dd.duck * 0.1];
+      tgt = [WHEEL.x + 1, 0, lerp(1.25, 1.75, u)];
       fov = lerp(62, 52, u);
       view = 'pov';
       sh = 0.02;

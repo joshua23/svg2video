@@ -585,6 +585,24 @@ function psola(x, sr, p) {
   return y.subarray(0, x.length);
 }
 
+/** 外部配音（已是男声）：重采样到 48k、切掉首尾静音、轻微 EQ、响度归一 */
+function cleanVoice(w) {
+  const step = w.sr / SR;
+  const n = Math.floor(w.data.length / step);
+  let s = new Float32Array(n);
+  for (let i = 0; i < n; i++) s[i] = w.data[Math.min(w.data.length - 1, Math.round(i * step))];
+  let a = 0;
+  let b = n - 1;
+  while (a < n && Math.abs(s[a]) < 0.01) a++;
+  while (b > a && Math.abs(s[b]) < 0.01) b--;
+  s = s.slice(Math.max(0, a - Math.round(0.02 * SR)), Math.min(n, b + Math.round(0.05 * SR)));
+  const eq = filt(s, biquad('hp', 70, 0.7), biquad('peak', 3000, 1.2, 2));
+  let peak = 0;
+  for (const v of eq) peak = Math.max(peak, Math.abs(v));
+  for (let i = 0; i < eq.length; i++) eq[i] = Math.tanh((eq[i] / (peak || 1)) * 1.3) / Math.tanh(1.3);
+  return eq;
+}
+
 /** 男声化 + EQ + 喊叫时的轻微失真 */
 function voiceFx(w, shout) {
   const low = psola(w.data, w.sr, PSOLA_P);
@@ -758,17 +776,30 @@ function build() {
   buildMusic(music);
 
   // 对白
+  // 优先使用 Speko 合成的真人感配音（scripts/afanti/speko-voice.mjs）；没有时退回本地 TTS + 变声
   const vdir = path.join(BUILD, 'voice');
-  for (const l of LINES) {
-    const f = path.join(vdir, `${l.id}.wav`);
-    if (!fs.existsSync(f)) {
-      console.warn('缺少对白音频，先运行 npm run afanti:voice →', f);
-      continue;
+  const sdir = path.join(BUILD, 'voice_speko');
+  let usedSpeko = 0;
+  for (const [i, l] of LINES.entries()) {
+    const sp = path.join(sdir, `${l.id}.wav`);
+    let v;
+    if (fs.existsSync(sp)) {
+      v = cleanVoice(readWav(sp));
+      usedSpeko++;
+    } else {
+      const f = path.join(vdir, `${l.id}.wav`);
+      if (!fs.existsSync(f)) {
+        console.warn('缺少对白音频，先运行 npm run afanti:voice →', f);
+        continue;
+      }
+      v = voiceFx(readWav(f), clamp((l.energy - 1) * 3, 0, 1));
     }
-    const shout = clamp((l.energy - 1) * 3, 0, 1);
-    const v = voiceFx(readWav(f), shout);
+    const next = LINES[i + 1]?.t ?? DURATION_S;
+    const dur = v.length / SR;
+    if (l.t + dur > next + 0.05) console.warn(`⚠ ${l.id} 时长 ${dur.toFixed(2)}s，会和下一句重叠 ${(l.t + dur - next).toFixed(2)}s`);
     voice.add(v, l.t, l.gain * 0.9, -0.05);
   }
+  console.log(usedSpeko ? `对白：${usedSpeko}/${LINES.length} 句使用 Speko 配音` : '对白：使用本地 TTS + 变声');
 
   // ---------------------------------------------------------------- 混音
   const [vL, vR] = reverb(voice.L, voice.R, { room: 0.7, damp: 0.5, wet: 0.16 });

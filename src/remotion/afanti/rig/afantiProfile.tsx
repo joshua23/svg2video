@@ -32,6 +32,8 @@ export interface ProfilePose {
   hatLift: number;
   flutter: number;
   expr: Expr;
+  /** 3D 版：双腿向两侧张开的角度（弧度），骑在驴背上约 0.45 */
+  spread?: number;
 }
 
 const TORSO = 45;

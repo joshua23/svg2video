@@ -11,12 +11,12 @@ export const BODY_Y = -76; // 身体中心离地高度（厘米）
 export const SADDLE: V2 = [-3, -33];
 export const POMMEL: V2 = [13, -37];
 
-interface LegAngles {
+export interface LegAngles {
   up: number;
   low: number;
 }
 
-function legAngles(d: DonkeyState, leg: number): LegAngles {
+export function legAngles(d: DonkeyState, leg: number): LegAngles {
   const front = leg >= 2;
   let ps = d.phase - LEG_OFFSETS[leg];
   ps -= Math.floor(ps);

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { AbsoluteFill, Audio, continueRender, delayRender, getStaticFiles, staticFile, useCurrentFrame } from 'remotion';
 import '@fontsource/zcool-kuaile/chinese-simplified-400.css';
 import '@fontsource/noto-sans-sc/chinese-simplified-700.css';
+import '@fontsource/zcool-qingke-huangyou/chinese-simplified-400.css';
 import { AfantiScene } from './scene';
 import { FPS, LINES, clamp } from './plan';
 
-const BAR = 132; // 2.39:1 宽银幕遮幅
+export const BAR = 132; // 2.39:1 宽银幕遮幅
 
-function Subtitle({ t }: { t: number }) {
+export function Subtitle({ t }: { t: number }) {
   const line = [...LINES].reverse().find((l) => t >= l.t - 0.05);
   if (!line) return null;
   const next = LINES[LINES.indexOf(line) + 1];
@@ -61,14 +62,16 @@ function Title({ t }: { t: number }) {
 }
 
 const ALL_TEXT = LINES.map((l) => l.text).join('') + '阿凡提：大战坎儿井辘轳砰！';
+const TITLE_TEXT = '阿凡提大战坎儿井辘轳';
 
-function useFonts() {
+export function useFonts() {
   const [handle] = useState(() => delayRender('加载中文字体'));
   useEffect(() => {
     const fonts = document.fonts;
     Promise.all([
       fonts.load(`700 50px "Noto Sans SC"`, ALL_TEXT),
       fonts.load(`400 64px "ZCOOL KuaiLe"`, ALL_TEXT),
+      fonts.load(`400 64px "ZCOOL QingKe HuangYou"`, TITLE_TEXT),
     ])
       .catch(() => undefined)
       .then(() => continueRender(handle));

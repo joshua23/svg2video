@@ -254,7 +254,7 @@ function PovOverlay({ t }: { t: number }) {
 
 // ------------------------------------------------------------------ overlays
 
-function SpeedLines({ t, amount }: { t: number; amount: number }) {
+export function SpeedLines({ t, amount }: { t: number; amount: number }) {
   if (amount <= 0) return null;
   const r = rng(Math.floor(t * 30) * 13 + 1);
   const lines: React.ReactNode[] = [];
@@ -267,7 +267,7 @@ function SpeedLines({ t, amount }: { t: number; amount: number }) {
   return <g>{lines}</g>;
 }
 
-function ImpactBurst({ t }: { t: number }) {
+export function ImpactBurst({ t }: { t: number }) {
   const a = t - T.impact;
   if (a < 0 || a > 0.62) return null;
   const s = 0.6 + 0.6 * (1 - Math.exp(-a * 14));

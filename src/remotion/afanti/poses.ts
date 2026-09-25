@@ -28,6 +28,7 @@ function pendulum(phi: number, o: Partial<ProfilePose>): ProfilePose {
     R: -phi,
     tl: 0,
     aN1: 178, aN2: 182, aF1: 176, aF2: 184,
+    spread: 0.18,
     ...o,
   });
 }
@@ -35,20 +36,20 @@ function pendulum(phi: number, o: Partial<ProfilePose>): ProfilePose {
 const flail = (t: number, k = 1) => Math.sin(t * 19) * 32 * k;
 
 const PROFILE_KEYS: [number, PF][] = [
-  [0.0, () => P({ px: -8, py: 38, R: 0, tl: 16, hd: -8, aN1: 62, aN2: 150, aF1: 70, aF2: 158, lN1: 105, lN2: -5, lF1: -55, lF2: -95, sa: 150, flutter: 0.3, expr: E('o', 'wide', 0.8) })],
-  [0.26, (t) => P({ px: -92, py: 10, R: 90, tl: 0, hd: -28, aN1: 172, aN2: 178, aF1: 176, aF2: 181, lN1: 8 + flail(t), lN2: -20 + flail(t + 0.08), lF1: 8 - flail(t), lF2: -20 - flail(t + 0.08), sa: 8, flutter: 1, hatLift: 6, expr: E('scream', 'wide', 1) })],
-  [0.8, (t) => P({ px: -90, py: 2, R: 84, tl: 0, hd: -20, aN1: 172, aN2: 178, aF1: 176, aF2: 181, lN1: 20 + flail(t), lN2: -10 + flail(t + 0.08), lF1: 20 - flail(t), lF2: -10 - flail(t + 0.08), sa: 8, flutter: 1, hatLift: 5, expr: E('scream', 'wide', 1) })],
-  [1.02, () => P({ px: -34, py: -64, R: 38, tl: 10, hd: 10, aN1: 130, aN2: 150, aF1: 140, aF2: 160, lN1: 115, lN2: 10, lF1: 100, lF2: -5, sa: 60, flutter: 0.8, hatLift: 10, expr: E('o', 'wide', 0.6) })],
+  [0.0, () => P({ spread: 0.2, px: -8, py: 38, R: 0, tl: 16, hd: -8, aN1: 62, aN2: 150, aF1: 70, aF2: 158, lN1: 105, lN2: -5, lF1: -55, lF2: -95, sa: 150, flutter: 0.3, expr: E('o', 'wide', 0.8) })],
+  [0.26, (t) => P({ px: -92, py: 10, R: 90, tl: 0, hd: -28, aN1: 172, aN2: 178, aF1: 176, aF2: 181, lN1: 8 + flail(t), lN2: -20 + flail(t + 0.08), lF1: 8 - flail(t), lF2: -20 - flail(t + 0.08), sa: 8, flutter: 1, hatLift: 6, spread: 0.15, expr: E('scream', 'wide', 1) })],
+  [0.8, (t) => P({ px: -90, py: 2, R: 84, tl: 0, hd: -20, aN1: 172, aN2: 178, aF1: 176, aF2: 181, lN1: 20 + flail(t), lN2: -10 + flail(t + 0.08), lF1: 20 - flail(t), lF2: -10 - flail(t + 0.08), sa: 8, flutter: 1, hatLift: 5, spread: 0.15, expr: E('scream', 'wide', 1) })],
+  [1.02, () => P({ spread: 0.3, px: -34, py: -64, R: 38, tl: 10, hd: 10, aN1: 130, aN2: 150, aF1: 140, aF2: 160, lN1: 115, lN2: 10, lF1: 100, lF2: -5, sa: 60, flutter: 0.8, hatLift: 10, expr: E('o', 'wide', 0.6) })],
   [1.2, () => P({ px: 0, py: -2, R: -6, tl: -10, hd: -6, aN1: 140, aN2: 160, aF1: 150, aF2: 175, sa: 150, hatLift: 14, expr: E('o', 'wide', 0.8) })],
   [1.36, () => P({ tl: 12, hd: -6, aN1: 88, aN2: 92, aF1: -150, aF2: -170, sa: 97, flutter: 0.8, hatLift: 0, expr: E('grin', 'normal', 0.9) })],
   [2.0, () => P({ tl: 12, hd: -6, aN1: 88, aN2: 92, aF1: -150, aF2: -170, sa: 97, flutter: 0.8, expr: E('grin', 'normal', 0.9) })],
   // 跳石
   [4.0, () => P({ tl: -4, aN1: 62, aN2: 118, aF1: 55, aF2: 115, sa: 150, expr: E('o', 'wide', 0.6) })],
   [4.2, () => P({ tl: 16, hd: 6, aN1: 70, aN2: 110, aF1: 60, aF2: 105, sa: 140, expr: E('grit', 'wide', -0.4) })],
-  [4.44, (t) => P({ px: -6, py: -56, R: -10, tl: -12, hd: -12, aN1: 165 + flail(t, 0.4), aN2: 188, aF1: -168, aF2: -158, lN1: 62, lN2: 22, lF1: -42, lF2: -62, sa: 170, flutter: 1, hatLift: 12, expr: E('scream', 'wide', 1) })],
-  [4.76, () => P({ px: 0, py: -80, R: 0, tl: 0, aN1: 108, aN2: 96, aF1: -108, aF2: -98, lN1: 6, lN2: 0, lF1: -4, lF2: -2, sa: 92, flutter: 0.8, hatLift: 4, expr: E('o', 'wide', 0.8) })],
-  [4.98, (t) => P({ px: 0, py: -80, R: 9 * Math.sin(t * 9), tl: -4 * Math.sin(t * 9 + 0.6), hd: -6 * Math.sin(t * 9), aN1: 98 + 16 * Math.sin(t * 9 + 1), aN2: 84, aF1: -96 + 16 * Math.sin(t * 9 + 1), aF2: -80, lN1: 8, lN2: -3, lF1: -6, lF2: -2, sa: 90 + 12 * Math.sin(t * 9 + 1.3), flutter: 0.7, expr: E('wobble', 'wide', 0.7) })],
-  [5.8, (t) => P({ px: 0, py: -80, R: 9 * Math.sin(t * 9), tl: -4 * Math.sin(t * 9 + 0.6), aN1: 98, aN2: 84, aF1: -96, aF2: -80, lN1: 8, lN2: -3, lF1: -6, lF2: -2, sa: 92, flutter: 0.7, expr: E('wobble', 'wide', 0.7) })],
+  [4.44, (t) => P({ spread: 0.3, px: -6, py: -56, R: -10, tl: -12, hd: -12, aN1: 165 + flail(t, 0.4), aN2: 188, aF1: -168, aF2: -158, lN1: 62, lN2: 22, lF1: -42, lF2: -62, sa: 170, flutter: 1, hatLift: 12, expr: E('scream', 'wide', 1) })],
+  [4.76, () => P({ spread: 0.14, px: 0, py: -80, R: 0, tl: 0, aN1: 108, aN2: 96, aF1: -108, aF2: -98, lN1: 6, lN2: 0, lF1: -4, lF2: -2, sa: 92, flutter: 0.8, hatLift: 4, expr: E('o', 'wide', 0.8) })],
+  [4.98, (t) => P({ spread: 0.14, px: 0, py: -80, R: 9 * Math.sin(t * 9), tl: -4 * Math.sin(t * 9 + 0.6), hd: -6 * Math.sin(t * 9), aN1: 98 + 16 * Math.sin(t * 9 + 1), aN2: 84, aF1: -96 + 16 * Math.sin(t * 9 + 1), aF2: -80, lN1: 8, lN2: -3, lF1: -6, lF2: -2, sa: 90 + 12 * Math.sin(t * 9 + 1.3), flutter: 0.7, expr: E('wobble', 'wide', 0.7) })],
+  [5.8, (t) => P({ spread: 0.14, px: 0, py: -80, R: 9 * Math.sin(t * 9), tl: -4 * Math.sin(t * 9 + 0.6), aN1: 98, aN2: 84, aF1: -96, aF2: -80, lN1: 8, lN2: -3, lF1: -6, lF2: -2, sa: 92, flutter: 0.7, expr: E('wobble', 'wide', 0.7) })],
   // 绊倒：翻过脖子，抓住鞍桥荡来荡去
   [5.94, () => pendulum(168, { lN1: 20, lN2: 30, lF1: 5, lF2: 20, sa: 150, hatLift: 8, flutter: 1, expr: E('scream', 'wide', 1) })],
   [6.18, (t) => pendulum(74, { lN1: 60 + flail(t, 0.5), lN2: 10, lF1: 40 - flail(t, 0.5), lF2: -10, sa: 30, hatLift: 10, flutter: 1, expr: E('scream', 'wide', 1) })],
@@ -58,7 +59,7 @@ const PROFILE_KEYS: [number, PF][] = [
   [7.0, (t) => pendulum(-58 + 8 * Math.sin(t * 8), { aF1: 176, aF2: 184, aN1: 250, aN2: 262, lN1: -32 + 10 * Math.sin(t * 13), lN2: -45, lF1: -20 - 10 * Math.sin(t * 13), lF2: -30, sa: 205, flutter: 1, hatLift: 3, expr: E('grin', 'wide', 1) })],
   [7.9, (t) => pendulum(-48 + 8 * Math.sin(t * 8), { aF1: 176, aF2: 184, aN1: 250, aN2: 262, lN1: -32, lN2: -45, lF1: -20, lF2: -30, sa: 205, flutter: 1, expr: E('grin', 'wide', 1) })],
   // 英雄恢复
-  [8.18, () => P({ px: -20, py: -40, R: -24, tl: 8, aN1: 150, aN2: 170, aF1: 140, aF2: 160, lN1: 80, lN2: 20, lF1: 60, lF2: 0, sa: 140, flutter: 1, expr: E('o', 'wide', 0.5) })],
+  [8.18, () => P({ spread: 0.3, px: -20, py: -40, R: -24, tl: 8, aN1: 150, aN2: 170, aF1: 140, aF2: 160, lN1: 80, lN2: 20, lF1: 60, lF2: 0, sa: 140, flutter: 1, expr: E('o', 'wide', 0.5) })],
   [8.45, () => P({ tl: -4, hd: -9, aN1: 84, aN2: 88, aF1: -42, aF2: 62, sa: 92, flutter: 1, expr: E('smug', 'squint', 0.9) })],
   [11.0, () => P({ tl: -4, hd: -9, aN1: 84, aN2: 88, aF1: -42, aF2: 62, sa: 92, flutter: 1, expr: E('smug', 'squint', 0.9) })],
 ];
@@ -67,6 +68,7 @@ function blendPose(a: ProfilePose, b: ProfilePose, u: number): ProfilePose {
   const o = { ...a } as ProfilePose;
   const keys: (keyof ProfilePose)[] = ['px', 'py', 'R', 'tl', 'hd', 'aN1', 'aN2', 'aF1', 'aF2', 'lN1', 'lN2', 'lF1', 'lF2', 'sa', 'staff', 'hatLift', 'flutter'];
   for (const k of keys) (o[k] as number) = lerp(a[k] as number, b[k] as number, u);
+  o.spread = lerp(a.spread ?? 0.42, b.spread ?? 0.42, u);
   o.expr = u < 0.5 ? a.expr : b.expr;
   if (a.expr.sweat || b.expr.sweat) o.expr = { ...o.expr, sweat: lerp(a.expr.sweat ?? 0, b.expr.sweat ?? 0, u) };
   return o;
@@ -100,7 +102,7 @@ export function afantiHugPose(t: number): HugPose {
     px: 0, py: 0, R: 0, tl: -4, hd: -4,
     aN1: 192, aN2: 176, aF1: 186, aF2: 176,
     lN1: 78, lN2: -6, lF1: 70, lF2: -12,
-    sa: 0, staff: 0, flutter: 0.4,
+    sa: 0, staff: 0, flutter: 0.4, spread: 0.16,
     expr: E('grit', 'squint', -0.6),
   });
   if (t < T.impact + 0.5) return { ...base, expr: E('grit', 'squint', -0.8), hatLift: 6 * Math.exp(-u * 6), squash };

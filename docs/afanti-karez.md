@@ -2,7 +2,43 @@
 
 画面、配乐、音效、对白全部由本仓库的代码生成，没有使用任何外部素材。
 
-成片：`renders/afanti-karez.mp4`（1920×1080，30fps，H.264 + AAC，2.39:1 遮幅）
+成片：
+- `renders/afanti-karez-3d.mp4` —— **3D 卡通渲染复古动画版**（Barracuda-M 复刻项目的风格）
+- `renders/afanti-karez.mp4` —— 最初的 2D SVG 版
+
+两版都是 1920×1080、30fps、H.264 + AAC、2.39:1 遮幅，分镜与动作完全相同。
+
+## 3D 卡通渲染版（Barracuda remake 风格）
+
+渲染管线移植自 [joshua23/barracuda-retro-anime](https://github.com/joshua23/barracuda-retro-anime)
+（`src/remake/lib`）：three.js / react-three-fiber 场景 → 两级色阶卡通材质 →
+深度 / 法线 / 物体 ID 三路墨线勾边 → 泛光 → 横向镜头色差、边缘径向模糊、柔焦、颗粒、暗角。
+天空用它的手绘积云着色器，云团由 3D 相机每帧实时投影，所以镜头转动时云的位置是正确的。
+
+- `src/remotion/afanti3d/lib/`：移植的渲染库（Scene3D、Post、materials、canvasTex、clouds）
+- `rig3d.tsx`：3D 阿凡提与毛驴（胶囊 / 球 / 锥体拼装，骨骼角度直接复用 2D 版的姿势数据）
+- `world3d.tsx`：戈壁、土路、胡杨林、岩石、骆驼刺、坎儿井土堆、火焰山与天山、积云天空
+- `windlass3d.tsx`：3D 木辘轳（带木纹贴图、会转的宽叶板、绞绳鼓、水桶）
+- `scene3d.tsx`：相机（沿用 2D 版 13 个机位）、跟随阳光的阴影、尘土粒子、飞走的手杖
+- `AfantiKarez3D.tsx`：合成 + 遮幅、字幕、"砰！"、片尾复古立体标题
+
+渲染：`npm run afanti:render3d`（没有 GPU 时自动用软件 WebGL `swangle`；有 GPU 可设 `AFANTI_GL=angle` 提速）。
+
+## 配音（Speko）
+
+`scripts/afanti/speko-voice.mjs` 通过 Speko 语音网关（`POST https://api.speko.dev/v1/synthesize`）合成对白，
+优先使用支持表演指令的模型，每句台词都附带角色设定和这一刻的情绪指令。
+
+```bash
+export SPEKO_API_KEY=...          # 只放在环境变量里，不要提交进仓库
+npm run afanti:speko -- l08       # 先合成一句试听
+npm run afanti:speko              # 合成全部 12 句 → build/afanti/voice_speko/
+npm run afanti:audio              # 自动改用 Speko 配音重新混音
+npm run afanti:render3d
+```
+
+没有 Speko 配音文件时，`audio.mjs` 退回到本地 TTS + 变声。
+
 
 ## 改编说明
 
