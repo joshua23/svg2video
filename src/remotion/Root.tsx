@@ -1,5 +1,7 @@
 import { Composition, registerRoot } from 'remotion';
 import { SVGComposition } from '../components/remotion/SVGComposition';
+import { AfantiKarez } from './afanti/AfantiKarez';
+import { DURATION_FRAMES, FPS } from './afanti/plan';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -25,6 +27,14 @@ export const RemotionRoot: React.FC = () => {
             easingFunction: 'spring' as const,
           },
         }}
+      />
+      <Composition
+        id="AfantiKarez"
+        component={AfantiKarez}
+        durationInFrames={DURATION_FRAMES}
+        fps={FPS}
+        width={1920}
+        height={1080}
       />
     </>
   );

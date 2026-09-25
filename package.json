@@ -9,9 +9,15 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit -p tsconfig.app.json"
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
+    "afanti:voice": "node scripts/afanti/audio.mjs export-lines && python3 scripts/afanti/tts.py build/afanti/lines.json build/afanti/voice",
+    "afanti:audio": "node scripts/afanti/audio.mjs build",
+    "afanti:render": "node scripts/afanti/render.mjs",
+    "afanti:all": "npm run afanti:voice && npm run afanti:audio && npm run afanti:render"
   },
   "dependencies": {
+    "@fontsource/noto-sans-sc": "^5.3.0",
+    "@fontsource/zcool-kuaile": "^5.3.0",
     "@remotion/bundler": "^4.0.357",
     "@remotion/cli": "^4.0.357",
     "@remotion/paths": "^4.0.357",
