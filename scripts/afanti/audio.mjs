@@ -585,6 +585,44 @@ function psola(x, sr, p) {
   return y.subarray(0, x.length);
 }
 
+/** WSOLA 时间压缩（不变调）：rate>1 变快 */
+function wsola(x, rate) {
+  if (rate <= 1.001) return x;
+  const N = Math.round(0.03 * SR);
+  const Hs = N >> 1;
+  const Ha = Math.round(Hs * rate);
+  const tol = Math.round(0.008 * SR);
+  const win = new Float32Array(N).map((_, i) => 0.5 - 0.5 * Math.cos((2 * Math.PI * i) / N));
+  const outLen = Math.floor(x.length / rate) + N;
+  const y = new Float32Array(outLen);
+  const norm = new Float32Array(outLen);
+  let prev = 0;
+  for (let o = 0, a = 0; a + N + tol < x.length && o + N < outLen; o += Hs, a += Ha) {
+    // 在 ±tol 内找与上一帧自然延续最相似的位置
+    let best = a;
+    let bestC = -Infinity;
+    if (o > 0) {
+      for (let d = -tol; d <= tol; d += 2) {
+        const c0 = a + d;
+        if (c0 < 0) continue;
+        let c = 0;
+        for (let i = 0; i < N; i += 4) c += x[c0 + i] * x[prev + Hs + i];
+        if (c > bestC) {
+          bestC = c;
+          best = c0;
+        }
+      }
+    }
+    for (let i = 0; i < N; i++) {
+      y[o + i] += x[best + i] * win[i];
+      norm[o + i] += win[i];
+    }
+    prev = best;
+  }
+  for (let i = 0; i < outLen; i++) if (norm[i] > 1e-3) y[i] /= norm[i];
+  return y.subarray(0, Math.floor(x.length / rate));
+}
+
 /** 外部配音（已是男声）：重采样到 48k、切掉首尾静音、轻微 EQ、响度归一 */
 function cleanVoice(w) {
   const step = w.sr / SR;
@@ -795,6 +833,12 @@ function build() {
       v = voiceFx(readWav(f), clamp((l.energy - 1) * 3, 0, 1));
     }
     const next = LINES[i + 1]?.t ?? DURATION_S;
+    const room = next - l.t - 0.04;
+    if (v.length / SR > room) {
+      const rate = Math.min(1.3, v.length / SR / room);
+      v = wsola(v, rate);
+      console.log(`  ${l.id} 压缩 ${rate.toFixed(2)}× 以放进镜头`);
+    }
     const dur = v.length / SR;
     if (l.t + dur > next + 0.05) console.warn(`⚠ ${l.id} 时长 ${dur.toFixed(2)}s，会和下一句重叠 ${(l.t + dur - next).toFixed(2)}s`);
     voice.add(v, l.t, l.gain * 0.9, -0.05);

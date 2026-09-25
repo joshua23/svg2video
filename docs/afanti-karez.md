@@ -31,19 +31,32 @@
 
 | 链路 | 接口 | 选用音色 | 理由 |
 |---|---|---|---|
-| OmniVoice（默认，本地） | `POST http://localhost:3900/v1/audio/speech` | **老张 `691d9d11`** | magic-story-cup 在用的中老年男声（《防你没商量》乡村医生），乡土、带说书味，最贴阿凡提；语速 0.225 秒/字，装得进镜头 |
-| Speko（云端） | `POST https://api.speko.dev/v1/synthesize` | `onyx` | magic-story-cup 云端候选里唯一的低沉男声 |
+| **Speko（成片所用）** | `POST https://api.speko.dev/v1/synthesize` | **阿里 Qwen3-TTS 指令版 + Ethan** | 见下方对比 |
+| OmniVoice（本地） | `POST http://localhost:3900/v1/audio/speech` | 老张 `691d9d11` | magic-story-cup 在用的中老年男声，适合在装有 OmniVoice 的 Mac 上重配 |
 
-每句按镜头时长自动算语速（最多 1.6×），输出到 `build/afanti/voice_ext/`，`audio.mjs` 发现后直接使用。
+**音色怎么选的**：同一句台词让候选各合成一遍，再用 Speko 的语音识别转写回来核对读音，并测音高：
+
+| 候选 | 结果 |
+|---|---|
+| OpenAI `onyx`（magic-story-cup 的云端默认） | 中文最弱，把「呃，怎么越来越大」读成「啊？什么越来越大」，语调平 |
+| Gemini `Puck` / `Charon` / `Fenrir` | 表现力强，但喊叫时飙到约 300Hz 假声，「嗯哼」读成英文腔 |
+| Qwen3-TTS 指令版 `Ethan` | 母语级普通话、字字准确、男中音（130–210Hz），能按句接收表演指令 ✅ |
+
+角色设定按「幽默、智慧、俏皮的男人，说话带狡黠笑意，声音轻快有弹性」写进每句的表演指令，
+另附这一刻的情绪（被拖拽惊叫、英雄般得意、硬撑着装淡定……）。
+
+表演型 TTS 每次节奏都不同，所以每句合成 3 个 take：先用语音识别淘汰读错的，再挑最贴合镜头时长的一条；
+混音时仍超出的，用 WSOLA 不变调压缩（最多 1.3×）收进镜头。定稿的 12 句在 `build/afanti/voice_ext/`（已入库）。
 
 ```bash
-# 在装有 OmniVoice-Studio 的 Mac 上（magic-story-cup 的本地后端）
-npm run afanti:dub -- l08        # 先试听一句
-npm run afanti:dub               # 全部 12 句
-npm run afanti:audio && npm run afanti:render3d
-
-# 或走 Speko 云端
+# Speko（云端）
 DUB_PROVIDER=speko SPEKO_API_KEY=... npm run afanti:dub
+#   在只允许经代理出网的环境里再加 NODE_USE_ENV_PROXY=1（让 Node 的 fetch 走 HTTPS_PROXY）
+
+# OmniVoice（在装有 OmniVoice-Studio 的 Mac 上）
+npm run afanti:dub
+
+npm run afanti:audio && npm run afanti:render3d
 ```
 
 没有外部配音文件时，`audio.mjs` 退回到本地 TTS + 变声。

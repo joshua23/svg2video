@@ -36,7 +36,8 @@ await renderMedia({
   outputLocation: out,
   browserExecutable,
   chromiumOptions,
-  concurrency: Number(process.env.CONCURRENCY ?? 3),
+  // 软件 WebGL（swangle）本身就吃满多核，多开标签页反而互相抢 CPU，3D 版默认单路
+  concurrency: Number(process.env.CONCURRENCY ?? (ID === 'AfantiKarez3D' ? 1 : 3)),
   timeoutInMilliseconds: 240000,
   onProgress: ({ progress }) => {
     const p = Math.floor(progress * 20);

@@ -227,16 +227,16 @@ export interface Line {
 export const LINES: Line[] = [
   { id: 'l01', t: 0.08, who: 'afanti', text: '哎哎哎——等等我！', say: '哎哎哎，等等我！', speed: 0.72, f0: 1.25, energy: 1.3, gain: 1.0 },
   { id: 'l02', t: 1.38, who: 'afanti', text: '目标——大辘轳！冲啊！', say: '目标，大辘轳！冲啊！', speed: 0.74, f0: 1.1, energy: 1.3, gain: 1.0 },
-  { id: 'l03', t: 2.64, who: 'afanti', text: '哎哟哟哟哟！', say: '哎哟哟哟哟！', speed: 0.8, f0: 1.3, energy: 1.2, gain: 0.95 },
+  { id: 'l03', t: 3.2, who: 'afanti', text: '哎哟哟哟哟！', say: '哎哟哟哟哟！', speed: 0.8, f0: 1.3, energy: 1.2, gain: 0.95 },
   { id: 'l04', t: 4.3, who: 'afanti', text: '哇！', say: '哇！', speed: 0.9, f0: 1.4, energy: 1.3, gain: 0.9 },
-  { id: 'l05', t: 4.9, who: 'afanti', text: '稳住……稳住……', say: '稳住，稳住。', speed: 0.64, f0: 1.0, energy: 1.0, gain: 0.95 },
-  { id: 'l06', t: 5.9, who: 'afanti', text: '哎呀！', say: '哎呀！', speed: 0.75, f0: 1.35, energy: 1.3, gain: 0.95 },
+  { id: 'l05', t: 4.72, who: 'afanti', text: '稳住……稳住……', say: '稳住，稳住。', speed: 0.64, f0: 1.0, energy: 1.0, gain: 0.95 },
+  { id: 'l06', t: 6.1, who: 'afanti', text: '哎呀！', say: '哎呀！', speed: 0.75, f0: 1.35, energy: 1.3, gain: 0.95 },
   { id: 'l07', t: 7.12, who: 'afanti', text: '看——马戏表演！', say: '看，马戏表演！', speed: 0.72, f0: 1.15, energy: 1.2, gain: 0.95 },
-  { id: 'l08', t: 8.5, who: 'afanti', text: '智慧，所向无敌！', say: '智慧，所向无敌！', speed: 0.8, f0: 0.95, energy: 1.2, gain: 1.0 },
-  { id: 'l09', t: 10.26, who: 'afanti', text: '呃……怎么越来越大？', say: '呃，怎么越来越大？', speed: 0.6, f0: 1.05, energy: 1.0, gain: 0.95 },
+  { id: 'l08', t: 8.3, who: 'afanti', text: '智慧，所向无敌！', say: '智慧，所向无敌！', speed: 0.8, f0: 0.95, energy: 1.2, gain: 1.0 },
+  { id: 'l09', t: 10.3, who: 'afanti', text: '呃……好大！', say: '呃，好大！', speed: 0.6, f0: 1.05, energy: 1.0, gain: 0.95 },
   { id: 'l10', t: 11.04, who: 'afanti', text: '哎哟！', say: '哎哟！', speed: 0.7, f0: 1.3, energy: 1.3, gain: 1.0 },
-  { id: 'l11', t: 11.95, who: 'afanti', text: '嗯哼，一切尽在掌握。', say: '嗯哼，一切尽在掌握。', speed: 0.72, f0: 0.95, energy: 1.0, gain: 0.95 },
-  { id: 'l12', t: 13.45, who: 'afanti', text: '救命啊！毛驴——回来！', say: '救命啊！毛驴，回来！', speed: 0.72, f0: 1.35, energy: 1.35, gain: 1.0 },
+  { id: 'l11', t: 11.75, who: 'afanti', text: '嗯哼，尽在掌握。', say: '嗯哼，尽在掌握。', speed: 0.72, f0: 0.95, energy: 1.0, gain: 0.95 },
+  { id: 'l12', t: 13.3, who: 'afanti', text: '救命啊！毛驴——回来！', say: '救命啊！毛驴，回来！', speed: 0.72, f0: 1.35, energy: 1.35, gain: 1.0 },
 ];
 
 /** 毛驴叫声（程序合成） */

@@ -24,3 +24,8 @@ dist-ssr
 
 # 阿凡提动画的中间产物（TTS 原始音频、分轨）
 build/
+!build/
+build/*
+!build/afanti/
+build/afanti/*
+!build/afanti/voice_ext/
