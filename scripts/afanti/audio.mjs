@@ -26,6 +26,8 @@ const LEN = Math.ceil((DURATION_S + 0.3) * SR);
  * 重采样会拉长时长，所以导出给 TTS 的语速预先乘以 FORMANT_K 做补偿。
  */
 const FORMANT_K = 0.87;
+/** 外部配音整体语速（不变调）：阿凡提说话要轻快，1.2× 左右 */
+const DIALOGUE_TEMPO = Number(process.env.DIALOGUE_TEMPO ?? 1.2);
 const PSOLA_P = 0.6;
 
 // ------------------------------------------------------------------ utils
@@ -822,7 +824,7 @@ function build() {
     const sp = path.join(sdir, `${l.id}.wav`);
     let v;
     if (fs.existsSync(sp)) {
-      v = cleanVoice(readWav(sp));
+      v = wsola(cleanVoice(readWav(sp)), DIALOGUE_TEMPO);
       usedSpeko++;
     } else {
       const f = path.join(vdir, `${l.id}.wav`);
@@ -835,7 +837,7 @@ function build() {
     const next = LINES[i + 1]?.t ?? DURATION_S;
     const room = next - l.t - 0.04;
     if (v.length / SR > room) {
-      const rate = Math.min(1.3, v.length / SR / room);
+      const rate = Math.min(1.25, v.length / SR / room);
       v = wsola(v, rate);
       console.log(`  ${l.id} 压缩 ${rate.toFixed(2)}× 以放进镜头`);
     }
@@ -843,7 +845,7 @@ function build() {
     if (l.t + dur > next + 0.05) console.warn(`⚠ ${l.id} 时长 ${dur.toFixed(2)}s，会和下一句重叠 ${(l.t + dur - next).toFixed(2)}s`);
     voice.add(v, l.t, l.gain * 0.9, -0.05);
   }
-  console.log(usedSpeko ? `对白：${usedSpeko}/${LINES.length} 句使用外部配音（build/afanti/voice_ext）` : '对白：使用本地 TTS + 变声');
+  console.log(usedSpeko ? `对白：${usedSpeko}/${LINES.length} 句使用外部配音（build/afanti/voice_ext），整体语速 ${DIALOGUE_TEMPO}×` : '对白：使用本地 TTS + 变声');
 
   // ---------------------------------------------------------------- 混音
   const [vL, vR] = reverb(voice.L, voice.R, { room: 0.7, damp: 0.5, wet: 0.16 });
