@@ -1,0 +1,338 @@
+import { lerp, mix } from './math';
+
+/** Everything that changes with the hour and the season. */
+export interface Look {
+  skyTop: string;
+  skyMid: string;
+  skyLow: string;
+  sun: string;
+  sunGlow: string;
+  sunX: number;
+  sunY: number;
+  sunR: number;
+  sunAlpha: number;
+  hillFar: string;
+  hillNear: string;
+  shore: string;
+  waterFar: string;
+  waterNear: string;
+  glitter: string;
+  glitterAlpha: number;
+  road: string;
+  slopeTop: string;
+  slopeBottom: string;
+  grass: string;
+  ink: string;
+  shadow: string;
+  shadowAlpha: number;
+  /** Shadow shear: horizontal and vertical offset per pixel of height. */
+  shadowKx: number;
+  shadowKy: number;
+  haze: string;
+  hazeAlpha: number;
+  foliage: string;
+}
+
+const base: Look = {
+  skyTop: '#d4c19a',
+  skyMid: '#e6d4ab',
+  skyLow: '#f3e3bd',
+  sun: '#fff6de',
+  sunGlow: '#f8e2ac',
+  sunX: 1280,
+  sunY: 405,
+  sunR: 34,
+  sunAlpha: 1,
+  hillFar: '#cdb88f',
+  hillNear: '#b9a078',
+  shore: '#8c7453',
+  waterFar: '#e4d3aa',
+  waterNear: '#b39f77',
+  glitter: '#fff8e2',
+  glitterAlpha: 0.9,
+  road: '#cbb07f',
+  slopeTop: '#a08660',
+  slopeBottom: '#6c573c',
+  grass: '#5a4731',
+  ink: '#2a2017',
+  shadow: '#2a2017',
+  shadowAlpha: 0.34,
+  shadowKx: 0.32,
+  shadowKy: 0.78,
+  haze: '#f6e8c6',
+  hazeAlpha: 0.35,
+  foliage: '#3b3223',
+};
+
+export const LOOKS = {
+  /** The parting: a golden autumn afternoon, the sun low over the river. */
+  parting: base,
+  dusk: {
+    ...base,
+    skyTop: '#a99478',
+    skyMid: '#cdb08a',
+    skyLow: '#ebc58f',
+    sun: '#ffe7b8',
+    sunGlow: '#eab77a',
+    sunY: 462,
+    sunR: 40,
+    sunAlpha: 0.9,
+    hillFar: '#b39a7a',
+    hillNear: '#9c8163',
+    waterFar: '#d8b688',
+    waterNear: '#8f7a5e',
+    road: '#a58d69',
+    slopeTop: '#7f6a4f',
+    slopeBottom: '#4d3e2d',
+    shadowAlpha: 0.22,
+    shadowKx: 0.5,
+    shadowKy: 1.2,
+    haze: '#eecb98',
+  },
+  spring: {
+    ...base,
+    skyTop: '#bdbcac',
+    skyMid: '#cfcebd',
+    skyLow: '#dedccb',
+    sun: '#eeeadb',
+    sunGlow: '#dcd9c6',
+    sunAlpha: 0,
+    hillFar: '#b8b9a6',
+    hillNear: '#a4a690',
+    shore: '#7c7d66',
+    waterFar: '#cfcfbd',
+    waterNear: '#9d9e89',
+    glitterAlpha: 0.15,
+    road: '#a9a78b',
+    slopeTop: '#8a8d6a',
+    slopeBottom: '#5c5f45',
+    grass: '#43472f',
+    ink: '#26261f',
+    shadow: '#26261f',
+    shadowAlpha: 0.1,
+    shadowKx: 0.05,
+    shadowKy: 0.18,
+    haze: '#d9d8c6',
+    hazeAlpha: 0.5,
+    foliage: '#3c4430',
+  },
+  summer: {
+    ...base,
+    skyTop: '#d9d0ac',
+    skyMid: '#e9e1c0',
+    skyLow: '#f5eed3',
+    sunX: 700,
+    sunY: 250,
+    sunR: 30,
+    hillFar: '#c8c09a',
+    hillNear: '#b0a67c',
+    shore: '#7b7250',
+    waterFar: '#e6dfbf',
+    waterNear: '#aaa27d',
+    road: '#cdbd8a',
+    slopeTop: '#99935f',
+    slopeBottom: '#646037',
+    grass: '#4a4a28',
+    shadowAlpha: 0.3,
+    shadowKx: -0.18,
+    shadowKy: 0.5,
+    foliage: '#394026',
+  },
+  autumn: {
+    ...base,
+    skyTop: '#cfb68c',
+    skyMid: '#e2c99c',
+    skyLow: '#efdbb0',
+    sunX: 1500,
+    sunY: 380,
+    hillFar: '#c9ae82',
+    hillNear: '#b3936a',
+    waterFar: '#e0c89d',
+    waterNear: '#ad946b',
+    road: '#c8a673',
+    slopeTop: '#a07e52',
+    slopeBottom: '#6d5134',
+    grass: '#5c4128',
+    shadowKx: 0.45,
+    shadowKy: 0.8,
+    foliage: '#4f3a22',
+  },
+  winter: {
+    ...base,
+    skyTop: '#c3c4c0',
+    skyMid: '#d6d6d0',
+    skyLow: '#e4e3dc',
+    sun: '#f3f1ea',
+    sunGlow: '#e1e0d8',
+    sunAlpha: 0.35,
+    sunY: 360,
+    hillFar: '#cacbc5',
+    hillNear: '#b9bab3',
+    shore: '#8f908a',
+    waterFar: '#d6d7d0',
+    waterNear: '#b3b4ac',
+    glitterAlpha: 0.2,
+    road: '#ecebe4',
+    slopeTop: '#e2e1d9',
+    slopeBottom: '#bebdb3',
+    grass: '#6c6b62',
+    ink: '#28272a',
+    shadow: '#4c5160',
+    shadowAlpha: 0.14,
+    shadowKx: 0.12,
+    shadowKy: 0.35,
+    haze: '#e8e8e2',
+    hazeAlpha: 0.55,
+    foliage: '#3a3936',
+  },
+  youth: {
+    ...base,
+    skyTop: '#d6d2b6',
+    skyMid: '#e7e3c8',
+    skyLow: '#f4f0da',
+    sunX: 560,
+    sunY: 330,
+    hillFar: '#c7c5a6',
+    hillNear: '#b1ae8c',
+    shore: '#79775a',
+    waterFar: '#e5e1c6',
+    waterNear: '#a8a584',
+    road: '#cfc493',
+    slopeTop: '#9a9868',
+    slopeBottom: '#62633e',
+    grass: '#474a2c',
+    shadowKx: -0.4,
+    shadowKy: 0.62,
+    foliage: '#37402a',
+  },
+  courtship: {
+    ...base,
+    skyTop: '#c9a98f',
+    skyMid: '#e1bf9c',
+    skyLow: '#f2d6ad',
+    sun: '#fff0cf',
+    sunGlow: '#f4c78f',
+    sunX: 1120,
+    sunY: 440,
+    sunR: 42,
+    hillFar: '#c7a587',
+    hillNear: '#ae8b6d',
+    shore: '#7d6048',
+    waterFar: '#ebcfa4',
+    waterNear: '#a78366',
+    road: '#c49e7a',
+    slopeTop: '#8f6f55',
+    slopeBottom: '#5a4232',
+    grass: '#4b3527',
+    shadowKx: 0.12,
+    shadowKy: 1.0,
+    foliage: '#3f2f25',
+  },
+  fatherhood: {
+    ...base,
+    skyTop: '#d7c095',
+    skyMid: '#e9d3a6',
+    skyLow: '#f6e2b7',
+    sunX: 1420,
+    sunY: 395,
+    road: '#cdaf79',
+    shadowKx: 0.4,
+    shadowKy: 0.82,
+  },
+  oldAge: {
+    ...base,
+    skyTop: '#aaa293',
+    skyMid: '#c1b8a6',
+    skyLow: '#d4cab5',
+    sun: '#e7dfcd',
+    sunGlow: '#cfc4ad',
+    sunAlpha: 0.25,
+    sunX: 1500,
+    sunY: 330,
+    hillFar: '#b7ae9c',
+    hillNear: '#a09582',
+    shore: '#71685a',
+    waterFar: '#c9c0ac',
+    waterNear: '#8e8574',
+    glitterAlpha: 0.2,
+    road: '#aea38b',
+    slopeTop: '#7e7463',
+    slopeBottom: '#4f473b',
+    grass: '#3f382d',
+    ink: '#24201b',
+    shadow: '#24201b',
+    shadowAlpha: 0.12,
+    shadowKx: 0.15,
+    shadowKy: 0.3,
+    haze: '#d6cdb9',
+    hazeAlpha: 0.45,
+    foliage: '#3b352b',
+  },
+  drought: {
+    ...base,
+    skyTop: '#d9d0bd',
+    skyMid: '#e6decb',
+    skyLow: '#f0e9d8',
+    sun: '#fbf6ea',
+    sunGlow: '#eee4cc',
+    sunAlpha: 0.7,
+    sunX: 1360,
+    sunY: 300,
+    hillFar: '#d3c9b2',
+    hillNear: '#c2b596',
+    shore: '#a08f6e',
+    waterFar: '#d6c7a2',
+    waterNear: '#bca57b',
+    glitterAlpha: 0,
+    road: '#d2c29a',
+    slopeTop: '#a89571',
+    slopeBottom: '#76664b',
+    grass: '#6a5a3e',
+    shadowAlpha: 0.22,
+    shadowKx: 0.3,
+    shadowKy: 0.55,
+    haze: '#f3ecdc',
+    hazeAlpha: 0.5,
+  },
+  reunion: {
+    ...base,
+    skyTop: '#ecd9ae',
+    skyMid: '#f6e7c2',
+    skyLow: '#fff5dc',
+    sun: '#fffbef',
+    sunGlow: '#fbe9bd',
+    sunX: 1100,
+    sunY: 360,
+    sunR: 60,
+    hillFar: '#e6d2a8',
+    hillNear: '#d9c093',
+    shore: '#b39a70',
+    waterFar: '#f0dfb6',
+    waterNear: '#d2b98a',
+    road: '#e2c998',
+    slopeTop: '#c7aa77',
+    slopeBottom: '#9d8156',
+    grass: '#7c6340',
+    ink: '#33271b',
+    shadow: '#5b4630',
+    shadowAlpha: 0.2,
+    shadowKx: 0.2,
+    shadowKy: 0.7,
+    haze: '#fff6de',
+    hazeAlpha: 0.5,
+  },
+} satisfies Record<string, Look>;
+
+export const blendLook = (a: Look, b: Look, t: number): Look => {
+  const out = { ...a };
+  (Object.keys(a) as (keyof Look)[]).forEach((k) => {
+    const va = a[k];
+    const vb = b[k];
+    if (typeof va === 'number' && typeof vb === 'number') {
+      (out[k] as number) = lerp(va, vb, t);
+    } else if (typeof va === 'string' && typeof vb === 'string') {
+      (out[k] as string) = mix(va, vb, t);
+    }
+  });
+  return out;
+};

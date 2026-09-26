@@ -14,6 +14,7 @@ export default defineConfig({
         editor: resolve(__dirname, 'editor.html'),
         preview: resolve(__dirname, 'preview.html'),
         export: resolve(__dirname, 'export.html'),
+        film: resolve(__dirname, 'film.html'),
       },
     },
   },

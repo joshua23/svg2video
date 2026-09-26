@@ -1,0 +1,19 @@
+{
+  "fps": 24,
+  "scenes": {
+    "title": 9,
+    "parting": 84,
+    "spring": 13,
+    "summer": 12,
+    "autumn": 12,
+    "winter": 13,
+    "youth": 22,
+    "courtship": 25,
+    "fatherhood": 26,
+    "oldAge": 30,
+    "drought": 41,
+    "reunion": 38,
+    "epilogue": 15,
+    "credits": 13
+  }
+}

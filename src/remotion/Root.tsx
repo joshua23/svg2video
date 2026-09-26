@@ -1,5 +1,6 @@
 import { Composition, registerRoot } from 'remotion';
 import { SVGComposition } from '../components/remotion/SVGComposition';
+import { FatherAndSon, FPS, TOTAL_FRAMES } from '../films/father-and-son/FatherAndSon';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -25,6 +26,14 @@ export const RemotionRoot: React.FC = () => {
             easingFunction: 'spring' as const,
           },
         }}
+      />
+      <Composition
+        id="FatherAndSon"
+        component={FatherAndSon}
+        durationInFrames={TOTAL_FRAMES}
+        fps={FPS}
+        width={1920}
+        height={1080}
       />
     </>
   );

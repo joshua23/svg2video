@@ -1,4 +1,4 @@
-import { Sparkles, Play, Download } from 'lucide-react';
+import { Sparkles, Play, Download, Film } from 'lucide-react';
 
 function App() {
   return (
@@ -56,6 +56,14 @@ function App() {
           >
             <Sparkles size={24} />
             开始创作
+          </a>
+
+          <a
+            href="/film.html"
+            className="mt-6 flex items-center justify-center gap-3 text-lg text-slate-300 transition-colors hover:text-white"
+          >
+            <Film size={20} />
+            观看示例短片《父与子》 Father and Son
           </a>
         </div>
       </div>

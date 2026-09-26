@@ -9,7 +9,10 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit -p tsconfig.app.json"
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
+    "film:score": "node scripts/father-and-son-score.mjs",
+    "film:studio": "remotion studio src/remotion/Root.tsx",
+    "film:render": "remotion render src/remotion/Root.tsx FatherAndSon out/father-and-son.mp4 --crf=23 --jpeg-quality=92 --x264-preset=slow --timeout=120000"
   },
   "dependencies": {
     "@remotion/bundler": "^4.0.357",
