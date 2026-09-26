@@ -77,6 +77,35 @@ const globe = {
   sphere: round(glPath({ type: 'Sphere' })),
 };
 
+// 4. Hainan towns for the island campaign.
+hainan.towns = [
+  ['临高', 109.69, 19.91], ['澄迈', 110.0, 19.74], ['琼山', 110.35, 20.0], ['儋州', 109.58, 19.52], ['万州', 110.39, 18.8], ['三亚', 109.51, 18.25],
+].map(([name, lon, lat]) => ({ name, xy: hn([lon, lat]).map((v) => +v.toFixed(1)) }));
+
+// 5. East Asia, from Hainan to Beijing, Japan and Manila.
+const ea = geoEquirectangular()
+  .fitExtent([[660, 70], [1860, 1000]], { type: 'MultiPoint', coordinates: [[104, 12], [133, 41]] })
+  .clipExtent([[-40, -40], [1960, 1120]]);
+const eaPath = geoPath(ea);
+const eastasia = {
+  land: round(eaPath(feature(land50, land50.objects.land))),
+  graticule: round(eaPath(geoGraticule10())),
+  places: [
+    ['临高', 109.69, 19.91], ['广州', 113.26, 23.13], ['澳门', 113.54, 22.19], ['厦门', 118.09, 24.48], ['澎湖', 119.57, 23.57],
+    ['安平', 120.16, 23.0], ['杭州', 120.16, 30.27], ['南京', 118.8, 32.05], ['登州', 120.75, 37.8], ['济州', 126.53, 33.5],
+    ['对马', 129.3, 34.4], ['长崎', 129.87, 32.75], ['马尼拉', 120.98, 14.6], ['北京', 116.4, 39.9], ['天津', 117.2, 39.13],
+  ].map(([name, lon, lat]) => ({ name, xy: ea([lon, lat]).map((v) => +v.toFixed(1)) })),
+};
+
+// 6. The Pearl River Delta.
+const pr = geoMercator().center([113.55, 22.65]).scale(32000).translate([1260, 560]).clipExtent([[-40, -40], [1960, 1120]]);
+const prPath = geoPath(pr);
+const prd = {
+  land: round(prPath(hnLand)),
+  places: [['广州', 113.26, 23.13], ['佛山', 113.12, 23.02], ['虎门', 113.67, 22.82], ['香港', 114.17, 22.3], ['澳门', 113.54, 22.19]]
+    .map(([name, lon, lat]) => ({ name, xy: pr([lon, lat]).map((v) => +v.toFixed(1)) })),
+};
+
 const out = join(root, 'src/videos/ming/art/maps.json');
-fs.writeFileSync(out, JSON.stringify({ zhenghe, hainan, globe }));
+fs.writeFileSync(out, JSON.stringify({ zhenghe, hainan, globe, eastasia, prd }));
 console.log('wrote', out, (fs.statSync(out).size / 1024).toFixed(0), 'KB');

@@ -1,6 +1,7 @@
 import { Composition, registerRoot } from 'remotion';
 import { SVGComposition } from '../components/remotion/SVGComposition';
 import { MING_DURATION, MingVideo } from '../videos/ming/MingVideo';
+import { LINGAO_DURATION, LingaoVideo } from '../videos/lingao/LingaoVideo';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -31,6 +32,14 @@ export const RemotionRoot: React.FC = () => {
         id="MingIndustrialParty"
         component={MingVideo}
         durationInFrames={MING_DURATION}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="LingaoQimingGuide"
+        component={LingaoVideo}
+        durationInFrames={LINGAO_DURATION}
         fps={30}
         width={1920}
         height={1080}

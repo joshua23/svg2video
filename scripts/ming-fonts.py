@@ -1,6 +1,6 @@
 """Subsets the fonts used by the "Ming" video to the characters it renders.
 
-Scans src/videos/ming for every character, then writes WOFF2 subsets to
+Scans src/videos/ming and src/videos/lingao for every character, then writes WOFF2 subsets to
 public/ming/fonts/. Source fonts (all SIL OFL, from Google Fonts):
   NotoSerifSC-400.ttf, NotoSerifSC-700.ttf, NotoSerifSC-900.ttf,
   MaShanZheng.ttf, JetBrainsMono.ttf
@@ -20,9 +20,14 @@ out_dir.mkdir(parents=True, exist_ok=True)
 
 chars = set(chr(c) for c in range(0x20, 0x7F))
 chars |= set("，。、；：？！“”‘’《》（）—…·→≈％")
-for path in (root / "src/videos/ming").rglob("*"):
-    if path.suffix in {".tsx", ".ts", ".json"} and path.name != "maps.json":
-        chars |= set(path.read_text(encoding="utf-8"))
+for folder in ("src/videos/ming", "src/videos/lingao"):
+    for path in (root / folder).rglob("*"):
+        if path.suffix in {".tsx", ".ts", ".json"}:
+            text_ = path.read_text(encoding="utf-8")
+            if path.name == "maps.json":
+                # only the place names, not the path data
+                text_ = "".join(c for c in text_ if ord(c) > 0x2E80)
+            chars |= set(text_)
 chars = {c for c in chars if c.isprintable()}
 text = "".join(sorted(chars))
 

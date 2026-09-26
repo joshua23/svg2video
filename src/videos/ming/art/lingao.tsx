@@ -49,7 +49,7 @@ export const NovelBook: React.FC<{ x: number; y: number; s?: number }> = ({ x, y
 };
 
 /** 五百人 — a hemicycle of travellers appearing dot by dot. */
-export const Crowd: React.FC<{ cx: number; cy: number; n?: number }> = ({ cx, cy, n = 520 }) => {
+export const Crowd: React.FC<{ cx: number; cy: number; n?: number; target?: number; plus?: boolean }> = ({ cx, cy, n = 520, target = 500, plus = true }) => {
   const { f, mode } = useBeat();
   const a = accent(mode);
   const r = rng(500);
@@ -73,7 +73,7 @@ export const Crowd: React.FC<{ cx: number; cy: number; n?: number }> = ({ cx, cy
       <path d={`M${cx - 840} ${cy} A840 460 0 0 1 ${cx + 840} ${cy}`} strokeWidth={1.4} {...dash(prog(f, 0, 40))} />
       <path d={`M${cx - 230} ${cy} A230 126 0 0 1 ${cx + 230} ${cy}`} strokeWidth={1.4} {...dash(prog(f, 0, 40))} />
       {dots}
-      <text x={cx} y={cy + 20} fill="currentColor" stroke="none" textAnchor="middle" style={{ fontFamily: F.mono, fontSize: 150 }}>{Math.floor(p * 500)}{p >= 1 ? '+' : ''}</text>
+      <text x={cx} y={cy + 20} fill="currentColor" stroke="none" textAnchor="middle" style={{ fontFamily: F.mono, fontSize: 150 }}>{Math.floor(p * target)}{plus && p >= 1 ? '+' : ''}</text>
     </g>
   );
 };

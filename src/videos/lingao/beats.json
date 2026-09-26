@@ -1,0 +1,70 @@
+{
+  "bpm": 100,
+  "fps": 30,
+  "chapters": [
+    { "n": "序", "name": "虫洞" },
+    { "n": "卷一", "name": "启航" },
+    { "n": "卷二", "name": "新世界" },
+    { "n": "卷三", "name": "新社会" },
+    { "n": "卷四", "name": "新澳洲" },
+    { "n": "卷五", "name": "进入" },
+    { "n": "卷六", "name": "纷争" },
+    { "n": "卷七", "name": "大陆" },
+    { "n": "卷八", "name": "深耕经营" },
+    { "n": "外篇", "name": "成书" },
+    { "n": "终", "name": "未完" }
+  ],
+  "beats": [
+    { "id": "hole", "b": 8, "mode": "dark", "ch": 0, "vol": 0, "when": "202X · D日", "land": "—", "music": "intro" },
+    { "id": "five-hundred", "b": 8, "mode": "dark", "ch": 0, "vol": 0, "when": "202X · D日", "land": "—", "music": "intro", "hit": "soft" },
+    { "id": "title", "b": 10, "mode": "dark", "ch": 0, "vol": 0, "when": "2009 — 2026", "land": "—", "music": "title", "hit": "gong" },
+
+    { "id": "ship", "b": 8, "mode": "paper", "ch": 1, "vol": 1, "when": "202X · D日前", "land": "—", "music": "pulse", "hit": "tick" },
+    { "id": "meeting", "b": 8, "mode": "paper", "ch": 1, "vol": 1, "when": "202X · D日前", "land": "—", "music": "pulse", "hit": "tick" },
+
+    { "id": "land", "b": 8, "mode": "paper", "ch": 2, "vol": 2, "when": "1628 · 崇祯元年", "land": "临高博铺", "music": "ming", "hit": "boom" },
+    { "id": "bairen", "b": 6, "mode": "dark", "ch": 2, "vol": 2, "when": "1628 · 崇祯元年", "land": "临高博铺", "music": "war", "hit": "boom" },
+    { "id": "cement", "b": 3, "mode": "paper", "ch": 2, "vol": 2, "when": "崇祯初年", "land": "临高县", "music": "build", "hit": "clank" },
+    { "id": "salt", "b": 3, "mode": "paper", "ch": 2, "vol": 2, "when": "崇祯初年", "land": "临高县", "music": "build", "hit": "clank" },
+    { "id": "school", "b": 3, "mode": "paper", "ch": 2, "vol": 2, "when": "崇祯初年", "land": "临高县", "music": "build", "hit": "clank" },
+    { "id": "telegraph", "b": 3, "mode": "paper", "ch": 2, "vol": 2, "when": "崇祯初年", "land": "临高县", "music": "build", "hit": "clank" },
+    { "id": "australian", "b": 8, "mode": "paper", "ch": 2, "vol": 2, "when": "崇祯初年", "land": "临高县", "music": "lingao", "hit": "boom" },
+
+    { "id": "senate", "b": 8, "mode": "paper", "ch": 3, "vol": 3, "when": "崇祯初年", "land": "临高县", "music": "lingao", "hit": "soft" },
+    { "id": "plan", "b": 6, "mode": "dark", "ch": 3, "vol": 3, "when": "崇祯初年", "land": "临高县", "music": "system", "hit": "boom" },
+    { "id": "sugar", "b": 6, "mode": "paper", "ch": 3, "vol": 3, "when": "崇祯初年", "land": "临高县", "music": "lingao" },
+    { "id": "tax", "b": 6, "mode": "paper", "ch": 3, "vol": 3, "when": "崇祯初年", "land": "临高县", "music": "lingao", "hit": "soft" },
+
+    { "id": "hainan", "b": 10, "mode": "paper", "ch": 4, "vol": 4, "when": "崇祯年间", "land": "海南岛", "music": "industry", "hit": "boom" },
+    { "id": "humen", "b": 10, "mode": "dark", "ch": 4, "vol": 4, "when": "崇祯年间", "land": "海南 · 珠江口", "music": "war", "hit": "boom" },
+
+    { "id": "furnace", "b": 6, "mode": "dark", "ch": 5, "vol": 5, "when": "崇祯年间", "land": "海南 · 珠江口", "music": "drive", "hit": "stab" },
+    { "id": "jiangnan", "b": 8, "mode": "paper", "ch": 5, "vol": 5, "when": "崇祯年间", "land": "海南 · 珠江口", "music": "industry", "hit": "soft" },
+    { "id": "north", "b": 8, "mode": "paper", "ch": 5, "vol": 5, "when": "崇祯年间", "land": "海南 · 珠江口", "music": "industry", "hit": "boom" },
+    { "id": "japan", "b": 8, "mode": "paper", "ch": 5, "vol": 5, "when": "崇祯年间", "land": "海南 · 珠江口", "music": "industry" },
+
+    { "id": "taiwan", "b": 8, "mode": "dark", "ch": 6, "vol": 6, "when": "崇祯年间", "land": "海南 · 台湾", "music": "war", "hit": "boom" },
+    { "id": "manila", "b": 8, "mode": "paper", "ch": 6, "vol": 6, "when": "崇祯年间", "land": "海南 · 台湾 · 马尼拉", "music": "tension", "hit": "soft" },
+
+    { "id": "guangzhou", "b": 10, "mode": "dark", "ch": 7, "vol": 7, "when": "崇祯年间", "land": "两广", "music": "peak", "hit": "gong" },
+    { "id": "govern", "b": 8, "mode": "paper", "ch": 7, "vol": 7, "when": "崇祯年间", "land": "两广", "music": "lingao" },
+
+    { "id": "deepen", "b": 8, "mode": "paper", "ch": 8, "vol": 8, "when": "崇祯年间", "land": "两广 · 南洋", "music": "lingao", "hit": "soft" },
+    { "id": "beijing", "b": 10, "mode": "dark", "ch": 8, "vol": 8, "when": "连载至 2026.9", "land": "两广 · 南洋 · 北方渗透", "music": "tension", "hit": "boom" },
+
+    { "id": "origin-q", "b": 6, "mode": "dark", "ch": 9, "year": 2006, "when": "现实 · 2006", "land": "—", "music": "dark", "hit": "gong" },
+    { "id": "forum", "b": 10, "mode": "paper", "ch": 9, "year": 2006, "when": "现实 · 2006", "land": "SC论坛", "music": "quote" },
+    { "id": "start", "b": 8, "mode": "paper", "ch": 9, "year": 2009, "when": "现实 · 2009", "land": "起点中文网", "music": "quote", "hit": "soft" },
+    { "id": "collective", "b": 10, "mode": "paper", "ch": 9, "year": 2010, "when": "现实 · 2010", "land": "论坛 · 贴吧", "music": "quote" },
+    { "id": "wiki", "b": 6, "mode": "paper", "ch": 9, "year": 2015, "when": "现实 · 2015", "land": "灰机wiki", "music": "quote", "hit": "soft" },
+    { "id": "books", "b": 8, "mode": "paper", "ch": 9, "year": 2017, "when": "现实 · 2017", "land": "实体书", "music": "tension", "hit": "soft" },
+    { "id": "takedown", "b": 8, "mode": "dark", "ch": 9, "year": 2019, "when": "现实 · 2019", "land": "起点中文网", "music": "dark", "hit": "boom" },
+    { "id": "industrial", "b": 8, "mode": "dark", "ch": 9, "year": 2020, "when": "现实 · 2020", "land": "学术界", "music": "deng", "hit": "gong" },
+    { "id": "critique", "b": 8, "mode": "paper", "ch": 9, "year": 2020, "when": "现实 · 2020", "land": "学术界", "music": "tension" },
+    { "id": "count", "b": 10, "mode": "dark", "ch": 9, "year": 2026, "when": "现实 · 2026.9", "land": "起点中文网", "music": "drive", "hit": "stab" },
+
+    { "id": "unfinished", "b": 8, "mode": "dark", "ch": 10, "year": 2026, "when": "现实 · 2026", "land": "—", "music": "coda", "hit": "soft" },
+    { "id": "question", "b": 10, "mode": "dark", "ch": 10, "year": 2026, "when": "现实 · 2026", "land": "—", "music": "final", "hit": "gong" },
+    { "id": "end", "b": 10, "mode": "dark", "ch": 10, "year": 2026, "when": "现实 · 2026", "land": "—", "music": "outro" }
+  ]
+}

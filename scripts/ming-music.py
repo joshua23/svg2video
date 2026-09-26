@@ -5,12 +5,13 @@ optional "hit" per shot) and renders an original cue that follows the cut:
 guqin/pipa-like plucks, string pads, taiko, gong, anvil and brass stabs, all
 synthesized with numpy. Hits land exactly on shot boundaries.
 
-Usage: python3 scripts/ming-music.py   ->  public/ming/score.mp3
+Usage: python3 scripts/ming-music.py [video]   ->  public/<video>/score.mp3   (video: ming | lingao)
        (needs numpy; encodes with the ffmpeg bundled in @remotion/compositor)
 """
 
 import json
 import os
+import sys
 import subprocess
 import wave
 from pathlib import Path
@@ -18,7 +19,8 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
-SHEET = json.loads((ROOT / "src/videos/ming/beats.json").read_text(encoding="utf-8"))
+VIDEO = sys.argv[1] if len(sys.argv) > 1 else "ming"
+SHEET = json.loads((ROOT / f"src/videos/{VIDEO}/beats.json").read_text(encoding="utf-8"))
 SR = 44100
 BEAT = 60 / SHEET["bpm"]
 rng = np.random.default_rng(1644)
@@ -349,7 +351,7 @@ mix *= 10 ** (-1.0 / 20)
 fade = int(TAIL * 0.8 * SR)
 mix[:, -fade:] *= np.linspace(1, 0, fade) ** 2
 
-tmp = ROOT / "node_modules/.cache/ming/score.wav"
+tmp = ROOT / f"node_modules/.cache/{VIDEO}/score.wav"
 tmp.parent.mkdir(parents=True, exist_ok=True)
 pcm = (mix.T * 32767).astype(np.int16)
 with wave.open(str(tmp), "wb") as w:
@@ -358,7 +360,8 @@ with wave.open(str(tmp), "wb") as w:
     w.setframerate(SR)
     w.writeframes(pcm.tobytes())
 
-out = ROOT / "public/ming/score.mp3"
+out = ROOT / f"public/{VIDEO}/score.mp3"
+out.parent.mkdir(parents=True, exist_ok=True)
 compositor = ROOT / "node_modules/@remotion/compositor-linux-x64-gnu"
 ffmpeg = compositor / "ffmpeg"
 ffmpeg.chmod(0o755)
