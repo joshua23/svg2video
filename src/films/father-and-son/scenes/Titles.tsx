@@ -2,8 +2,8 @@ import React from 'react';
 import timeline from '../timeline.json';
 import { AbsoluteFill, useCurrentFrame, useVideoConfig } from 'remotion';
 import { H, W } from '../lib/camera';
-import { BRUSH, SERIF } from '../lib/fonts';
 import { easeOut, win } from '../lib/math';
+import { GlyphText } from '../lib/type';
 import { Seal } from '../scenery/Card';
 import { Paper } from '../scenery/Paper';
 
@@ -42,9 +42,7 @@ const BrushChar: React.FC<{ ch: string; x: number; y: number; size: number; p: n
         <rect x={x - size} y={y - size * 0.95} width={size * 2} height={size * 1.25} fill={`url(#${id}-g)`} />
       </mask>
     </defs>
-    <text x={x} y={y} fontFamily={BRUSH} fontSize={size} fill={INK} textAnchor="middle" mask={`url(#${id})`} opacity={Math.min(1, p * 3)}>
-      {ch}
-    </text>
+    <GlyphText text={ch} face="brush" size={size} x={x} y={y} anchor="middle" fill={INK} mask={`url(#${id})`} opacity={Math.min(1, p * 3)} />
   </g>
 );
 
@@ -63,9 +61,7 @@ export const Title: React.FC = () => {
         {chars.map((c, i) => (
           <BrushChar key={c} ch={c} x={720 + i * 240} y={560} size={size} p={win(t, 1 + i * 0.8, 2.1 + i * 0.8)} id={`title-${i}`} />
         ))}
-        <text x={960} y={690} fontFamily={SERIF} fontSize={46} fill={INK} textAnchor="middle" letterSpacing={14} opacity={win(t, 3.6, 5)}>
-          FATHER AND SON
-        </text>
+        <GlyphText text="FATHER AND SON" size={46} x={960} y={690} anchor="middle" spacing={14} fill={INK} opacity={win(t, 3.6, 5)} />
         <g transform={`translate(1262 ${372}) scale(${1.3 - 0.3 * seal})`} opacity={seal}>
           <Seal x={0} y={0} size={62} text="念" />
         </g>
@@ -88,38 +84,29 @@ export const Credits: React.FC = () => {
         <rect width={W} height={H} fill={PAPER} />
         <Wash y={960} opacity={0.6} />
         <g opacity={a}>
-          <text x={960} y={400} fontFamily={BRUSH} fontSize={124} fill={INK} textAnchor="middle" letterSpacing={30}>
-            父与子
-          </text>
-          <text x={960} y={470} fontFamily={SERIF} fontSize={36} fill={INK} textAnchor="middle" letterSpacing={10}>
-            FATHER AND SON
-          </text>
+          <GlyphText text="父与子" face="brush" size={124} x={960} y={400} anchor="middle" spacing={30} fill={INK} />
+          <GlyphText text="FATHER AND SON" size={36} x={960} y={470} anchor="middle" spacing={10} fill={INK} />
         </g>
         <g opacity={b}>
-          <text x={960} y={610} fill={INK} textAnchor="middle" fontSize={38}>
-            <tspan fontFamily={BRUSH}>向 </tspan>
-            <tspan fontFamily={SERIF} fontSize={40}>
-              Michaël Dudok de Wit
-            </tspan>
-            <tspan fontFamily={BRUSH}> 《</tspan>
-            <tspan fontFamily={SERIF} fontSize={40} fontStyle="italic">
-              Father and Daughter
-            </tspan>
-            <tspan fontFamily={BRUSH}>》</tspan>
-            <tspan fontFamily={SERIF} fontSize={40}>
-              {' '}
-              (2000)
-            </tspan>
-            <tspan fontFamily={BRUSH}> 致敬</tspan>
-          </text>
-          <text x={960} y={664} fontFamily={SERIF} fontSize={30} fill={INK} textAnchor="middle" opacity={0.8}>
-            an homage to the Academy Award–winning short, retold as a story of a Chinese father and son
-          </text>
+          <GlyphText
+            runs={[
+              { text: '向 ', face: 'brush', size: 38 },
+              { text: 'Michaël Dudok de Wit ', face: 'serif', size: 40 },
+              { text: '《', face: 'brush', size: 38 },
+              { text: 'Father and Daughter', face: 'serif', size: 40, italic: true },
+              { text: '》', face: 'brush', size: 38 },
+              { text: ' (2000) ', face: 'serif', size: 40 },
+              { text: '致敬', face: 'brush', size: 38 },
+            ]}
+            x={960}
+            y={610}
+            anchor="middle"
+            fill={INK}
+          />
+          <GlyphText text="an homage to the Academy Award–winning short, retold as a story of a Chinese father and son" size={30} x={960} y={664} anchor="middle" fill={INK} opacity={0.8} />
         </g>
         <g opacity={c * 0.7}>
-          <text x={960} y={790} fontFamily={SERIF} fontSize={26} fill={INK} textAnchor="middle" letterSpacing={3}>
-            drawn and animated entirely in SVG · score synthesised in code
-          </text>
+          <GlyphText text="drawn and animated entirely in SVG · score synthesised in code" size={26} x={960} y={790} anchor="middle" spacing={3} fill={INK} />
         </g>
         <Seal x={929} y={850} size={62} text="念" opacity={c} />
         <Paper strength={0.9} />

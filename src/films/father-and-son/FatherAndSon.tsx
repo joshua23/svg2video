@@ -1,6 +1,5 @@
 import React from 'react';
 import { AbsoluteFill, Audio, Series, staticFile, useCurrentFrame } from 'remotion';
-import { ensureFonts } from './lib/fonts';
 import timeline from './timeline.json';
 import { win } from './lib/math';
 import { AUTUMN_SEC, Autumn, SPRING_SEC, SUMMER_SEC, Spring, Summer, WINTER_SEC, Winter } from './scenes/Childhood';
@@ -8,8 +7,6 @@ import { PARTING_SEC, Parting } from './scenes/Parting';
 import { DROUGHT_SEC, Drought, EPILOGUE_SEC, Epilogue, REUNION_SEC, Reunion } from './scenes/Return';
 import { CREDITS_SEC, Credits, TITLE_SEC, Title } from './scenes/Titles';
 import { COURTSHIP_SEC, Courtship, FATHERHOOD_SEC, Fatherhood, OLD_AGE_SEC, OldAge, YOUTH_SEC, Youth } from './scenes/Years';
-
-ensureFonts();
 
 export const FPS = timeline.fps;
 export const PAPER = '#efe3c8';

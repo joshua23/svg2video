@@ -27,5 +27,6 @@ How it is built (`src/films/father-and-son/`):
 | `timeline.json` | Scene durations shared by the film and the score generator |
 | `scripts/father-and-son-score.mjs` | A pentatonic waltz for synthetic guzheng, dizi, erhu and sheng, plus bell, wind and rain |
 
-Fonts: Ma Shan Zheng and Cormorant Garamond (SIL Open Font License), subset to the glyphs used
-and embedded in `src/films/father-and-son/fonts/` alongside their licences.
+Type: the title, chapter cards and credits are set in Ma Shan Zheng and Cormorant Garamond (SIL
+Open Font License), baked to SVG outlines by `scripts/father-and-son-glyphs.py` so renders never
+wait on a web font. The outlines and licences live in `src/films/father-and-son/fonts/`.

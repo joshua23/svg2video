@@ -1,6 +1,6 @@
 import React from 'react';
-import { BRUSH } from '../lib/fonts';
 import { f1, win } from '../lib/math';
+import { GlyphText } from '../lib/type';
 
 /** A red square seal (印章) with white characters. */
 export const Seal: React.FC<{ x: number; y: number; size: number; text: string; opacity?: number }> = ({ x, y, size, text, opacity = 1 }) => {
@@ -16,17 +16,7 @@ export const Seal: React.FC<{ x: number; y: number; size: number; text: string; 
         const col = cols - 1 - Math.floor(i / rows);
         const row = i % rows;
         return (
-          <text
-            key={i}
-            x={size * (cols === 1 ? 0.5 : 0.28 + col * 0.44)}
-            y={size * 0.12 + fs * (row + 0.86)}
-            fontFamily={BRUSH}
-            fontSize={fs}
-            fill="#f6e6d6"
-            textAnchor="middle"
-          >
-            {c}
-          </text>
+          <GlyphText key={i} text={c} face="brush" size={fs} x={size * (cols === 1 ? 0.5 : 0.28 + col * 0.44)} y={size * 0.12 + fs * (row + 0.86)} anchor="middle" fill="#f6e6d6" />
         );
       })}
     </g>
@@ -65,9 +55,7 @@ export const Card: React.FC<{ t: number; text: string; color: string; halo?: str
       </defs>
       <ellipse cx={x} cy={y + h / 2} rx={size * 1.3} ry={h * 0.72} fill={`url(#${hid})`} />
       {chars.map((c, i) => (
-        <text key={i} x={x} y={y + i * size * 1.05 + size * 0.85} fontFamily={BRUSH} fontSize={size} fill={color} textAnchor="middle" opacity={0.88}>
-          {c}
-        </text>
+        <GlyphText key={i} text={c} face="brush" size={size} x={x} y={y + i * size * 1.05 + size * 0.85} anchor="middle" fill={color} opacity={0.88} />
       ))}
       <Seal x={x - 17} y={y + chars.length * size * 1.05 + 22} size={34} text={seal} opacity={0.9} />
     </g>
