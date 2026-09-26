@@ -3,10 +3,8 @@ import { AbsoluteFill, Audio, Img, interpolate, Sequence, staticFile, useCurrent
 import { Hud } from './Hud';
 import { BeatContext, GlobalDefs } from './kit';
 import { SCENES } from './scenes';
-import { loadFonts } from './theme';
+import { useFonts } from './theme';
 import { BEATS, beatAt, FPS, TOTAL_FRAMES } from './timeline';
-
-loadFonts();
 
 const XFADE = 6;
 
@@ -19,6 +17,7 @@ const darkness = (frame: number) => {
 };
 
 export const MingVideo: React.FC = () => {
+  useFonts();
   const frame = useCurrentFrame();
   const dark = darkness(frame);
   const grainX = (frame * 73) % 256;

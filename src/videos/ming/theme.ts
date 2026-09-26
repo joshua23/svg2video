@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { continueRender, delayRender, staticFile } from 'remotion';
 
 export const W = 1920;
@@ -39,20 +40,28 @@ const fonts: [string, string, string][] = [
   ['MingMono', 'ming/fonts/mono.woff2', '500'],
 ];
 
-let loaded = false;
+let fontsReady: Promise<void> | null = null;
+
+/** Registers and loads the video's font faces once per page. */
 export const loadFonts = () => {
-  if (loaded || typeof document === 'undefined') return;
-  loaded = true;
-  const handle = delayRender('ming fonts', { timeoutInMilliseconds: 60000 });
-  const load = Promise.all(
-    fonts.map(([family, file, weight]) => {
-      const face = new FontFace(family, `url(${staticFile(file)}) format("woff2")`, { weight });
-      document.fonts.add(face);
-      return face.load();
-    }),
-  );
-  const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('font load timed out')), 45000));
-  Promise.race([load, timeout])
-    .catch((err) => console.error('font load failed', err))
-    .finally(() => continueRender(handle));
+  if (!fontsReady) {
+    fontsReady = Promise.all(
+      fonts.map(([family, file, weight]) => {
+        const face = new FontFace(family, `url(${staticFile(file)}) format("woff2")`, { weight });
+        document.fonts.add(face);
+        return face.load();
+      }),
+    ).then(() => undefined);
+  }
+  return fontsReady;
+};
+
+/** Holds the render until the fonts are loaded (delayRender must be created inside a component). */
+export const useFonts = () => {
+  const [handle] = useState(() => delayRender('ming fonts', { timeoutInMilliseconds: 60000 }));
+  useEffect(() => {
+    loadFonts()
+      .catch((err) => console.error('font load failed', err))
+      .finally(() => continueRender(handle));
+  }, [handle]);
 };
