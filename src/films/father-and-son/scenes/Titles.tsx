@@ -6,6 +6,7 @@ import { easeOut, win } from '../lib/math';
 import { GlyphText } from '../lib/type';
 import { Seal } from '../scenery/Card';
 import { Paper } from '../scenery/Paper';
+import { Fluff } from '../scenery/Weather';
 
 const PAPER = '#efe3c8';
 const INK = '#2a2017';
@@ -83,6 +84,7 @@ export const Credits: React.FC = () => {
       <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`}>
         <rect width={W} height={H} fill={PAPER} />
         <Wash y={960} opacity={0.6} />
+        <g transform={`translate(960 600) scale(${(1 + t * 0.003).toFixed(4)}) translate(-960 -600)`}>
         <g opacity={a}>
           <GlyphText text="父与子" face="brush" size={124} x={960} y={400} anchor="middle" spacing={30} fill={INK} />
           <GlyphText text="FATHER AND SON" size={36} x={960} y={470} anchor="middle" spacing={10} fill={INK} />
@@ -109,6 +111,8 @@ export const Credits: React.FC = () => {
           <GlyphText text="drawn and animated entirely in SVG · score synthesised in code" size={26} x={960} y={790} anchor="middle" spacing={3} fill={INK} />
         </g>
         <Seal x={929} y={850} size={62} text="念" opacity={c} />
+        </g>
+        <Fluff t={t} color="#a89066" amount={0.45} wind={1} seed={9} />
         <Paper strength={0.9} />
       </svg>
     </AbsoluteFill>

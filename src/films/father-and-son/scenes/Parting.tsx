@@ -12,7 +12,7 @@ import { Boat, Ripples, boatPoints } from '../rig/Boat';
 import { phase, travel } from '../rig/moves';
 import { WALK, gait, gaitPhase, kneel, reach, scull, stand } from '../rig/poses';
 import { perch, ride } from '../rig/riding';
-import { Build, Pose, backSkel, blendPose, blendSkel, fk, standHipY } from '../rig/skeleton';
+import { Build, Pose, backSkel, blendPose, blendSkel, fk, standHipY, turning } from '../rig/skeleton';
 import { DikeSet, OLD_WILLOW, SPOT, WILLOW_X } from '../scenery/DikeSet';
 
 export const PARTING_SEC = timeline.scenes.parting;
@@ -42,11 +42,6 @@ interface Placed extends ActorState {
 
 const walkPose = (b: Build, dist: number, amount: number) => gait(b, gaitPhase(b, dist, WALK), WALK, amount);
 
-/** Turning round: pass through a back view around the moment `flip` when facing changes sides. */
-const turning = (b: Build, pose: Pose, t: number, flip: number, w = 0.35) => {
-  const k = clamp(1 - Math.abs(t - flip) / w);
-  return k > 0 ? blendSkel(fk(b, pose), backSkel(b), k * k * (3 - 2 * k)) : undefined;
-};
 
 /** Where the father kneels to say goodbye, and where the willow switch changes hands. */
 const GX = SON_X + 46;

@@ -92,3 +92,23 @@ export const Geese: React.FC<{ t: number; x: number; y: number; size: number; co
   }
   return <path d={birds.join('')} fill="none" stroke={color} strokeWidth={Math.max(1, size * 0.18)} strokeLinecap="round" strokeLinejoin="round" />;
 };
+
+/** Willow catkins and reed down (柳絮 · 芦花) drifting on the air — keeps the quiet shots breathing. */
+export const Fluff: React.FC<{ t: number; amount?: number; color: string; wind?: number; seed?: number }> = ({ t, amount = 1, color, wind = 0.6, seed = 3 }) => {
+  const r = rng(1300 + seed);
+  const n = Math.round(70 * amount);
+  const d: string[] = [];
+  const span = W + 300;
+  for (let i = 0; i < n; i++) {
+    const depth = 0.4 + r() * 0.9;
+    const speed = (26 + r() * 40) * wind * depth;
+    const off = r() * span;
+    const y0 = r() * H;
+    const ph = r() * 6.28;
+    const x = ((((off + t * speed) % span) + span) % span) - 150;
+    const y = (((y0 - t * (6 + r() * 10) * depth + Math.sin(t * (0.6 + r()) + ph) * 26 * depth) % (H + 60)) + H + 60) % (H + 60) - 30;
+    const rad = (1.1 + r() * 2.2) * depth;
+    d.push(`M${f1(x - rad)} ${f1(y)}a${f1(rad)} ${f1(rad)} 0 1 0 ${f1(rad * 2)} 0a${f1(rad)} ${f1(rad)} 0 1 0 ${f1(-rad * 2)} 0`);
+  }
+  return <path d={d.join('')} fill={color} opacity={0.6} />;
+};

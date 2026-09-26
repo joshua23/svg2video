@@ -256,3 +256,9 @@ export const backSkel = (b: Build, opts: { sway?: number; headTurn?: number; arm
     legN: leg(1),
   };
 };
+
+/** Turning round: pass through a back view around the moment `flip` when facing changes sides. */
+export const turning = (b: Build, pose: Pose, t: number, flip: number, w = 0.35): Skel | undefined => {
+  const k = Math.max(0, Math.min(1, 1 - Math.abs(t - flip) / w));
+  return k > 0 ? blendSkel(fk(b, pose), backSkel(b), k * k * (3 - 2 * k)) : undefined;
+};
