@@ -1,5 +1,6 @@
 import { Composition, registerRoot } from 'remotion';
 import { SVGComposition } from '../components/remotion/SVGComposition';
+import { MING_DURATION, MingVideo } from '../videos/ming/MingVideo';
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -25,6 +26,14 @@ export const RemotionRoot: React.FC = () => {
             easingFunction: 'spring' as const,
           },
         }}
+      />
+      <Composition
+        id="MingIndustrialParty"
+        component={MingVideo}
+        durationInFrames={MING_DURATION}
+        fps={30}
+        width={1920}
+        height={1080}
       />
     </>
   );
